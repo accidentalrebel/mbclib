@@ -3,8 +3,9 @@
 import os
 import sys
 import json
-
 import requests
+import stix2
+from stix2 import Filter
 
 headers = {
     'accept': 'application/json',
@@ -22,3 +23,13 @@ response_json = response.json()[0]
 
 for attack in response_json['mitre_attcks']:
     print(attack['attck_id'])
+
+fs_source = stix2.FileSystemSource('./mbc-stix2/')
+
+relationships = fs_source.query([
+    Filter('type', '=', 'relationship'),
+    Filter('relationship_type', '=', 'subtechnique-of')
+])
+
+for rel in relationships:
+    print(rel)
