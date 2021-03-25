@@ -43,7 +43,7 @@ def get_behavior_relationships(behavior):
 
     return behavior_relationships
 
-def get_malware_relationships(malware):
+def get_behaviors_used_by_malware(malware):
     malware_relationships = []
     relationships = get_relationships('malware', 'uses', 'attack-pattern')
     for r in relationships:
@@ -71,6 +71,6 @@ if __name__ == '__main__':
     #     print(str(r))
 
     malwares = get_malwares_by_id('malware--36e75009-8fd6-467a-aa8c-c6a4d3511dfa')
-    related = get_malware_relationships(malwares[0])
+    related = get_behaviors_used_by_malware(malwares[0])
     for r in related:
         print(str(r))
