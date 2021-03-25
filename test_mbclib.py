@@ -8,7 +8,7 @@ eid = 'B0007'
 mid = 'malware--36e75009-8fd6-467a-aa8c-c6a4d3511dfa'
 
 def test_lib():
-    src = setup_src()
+    src = setup_src('./mbc-stix2/')
 
     b = get_behavior_by_id(src, bid)
     assert b.type == 'attack-pattern' and b.id == bid

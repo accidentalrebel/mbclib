@@ -62,8 +62,8 @@ def get_malwares_using_behavior(src, id):
         
     return l
 
-def setup_src():
-    return FileSystemSource('./mbc-stix2/')
+def setup_src(path):
+    return FileSystemSource(path)
 
 # if __name__ == '__main__':
 #     parser = ArgumentParser(description='MBC Tool')
