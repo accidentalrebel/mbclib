@@ -72,6 +72,10 @@ if __name__ == '__main__':
     parser.add_argument('-i',
                         '--id',
                         help='The ID to search for.')
+    parser.add_argument('-e',
+                        '--externalid',
+                        help='The external ID to search for.')
+    
     args = parser.parse_args()
 
     src = setup_src()
@@ -84,7 +88,15 @@ if __name__ == '__main__':
             behavior = get_behavior_by_id(src, args.id)
             print(str(behavior))
         else:
-            print('[Error] ID ' + id + ' is not valid.')
+            print('[ERROR] ID ' + args.id + ' is not valid.')
+            raise SystemExit(1)
+    elif args.externalid:
+        behavior = get_behavior_by_external_id(src, args.externalid)
+        if behavior:
+            print(str(behavior))
+        else:
+            print('[ERROR] ExternalID ' + args.externalId + ' is not valid.')
+            raise SystemExit(1)
 
     sys.exit()
 
