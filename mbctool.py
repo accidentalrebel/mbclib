@@ -26,31 +26,26 @@ def get_malwares_by_id(id):
         Filter('id', '=', id)
     ])
 
-def get_relationships(src_type, rel_type, target_type):
+def get_relationships_by(id, src_type, rel_type, target_type):
+    relationship_lists = []
     relationships = g_src.query([
         Filter('type', '=', 'relationship'),
         Filter('relationship_type', '=', rel_type)
     ])
+    for r in relationships:
+        if r.source_ref == id:
+            relationship_lists.append(r)
 
-    return relationships
+    return relationship_lists
 
 def get_behavior_relationships(behavior):
-    behavior_relationships = []
-    relationships = get_relationships('attack-pattern', 'subtechnique-of', 'attack-pattern')
-    for r in relationships:
-        if r.source_ref == behavior.id:
-            behavior_relationships.append(r)
-
-    return behavior_relationships
+    return get_relationships_by(behavior.id, 'attack-pattern', 'subtechnique-of', 'attack-pattern')
 
 def get_behaviors_used_by_malware(malware):
-    malware_relationships = []
-    relationships = get_relationships('malware', 'uses', 'attack-pattern')
-    for r in relationships:
-        if r.source_ref == malware.id:
-            malware_relationships.append(r)
+    return get_relationships_by(malware.id, 'malware', 'uses', 'attack-pattern')
 
-    return malware_relationships
+def get_malwares_using_behavior(behavior):
+    return get_relationships_by(behavior.id, 'attack-pattern', 'uses', 'malware')
 
 def setup_src():
     global g_src
@@ -74,3 +69,5 @@ if __name__ == '__main__':
     related = get_behaviors_used_by_malware(malwares[0])
     for r in related:
         print(str(r))
+
+    
