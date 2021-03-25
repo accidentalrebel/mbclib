@@ -77,11 +77,16 @@ if __name__ == '__main__':
     src = setup_src()
 
     if args.id:
-        malware = get_malware_by_id(src, args.id)
-        print(str(malware))
-        
-    sys.exit()
+        if 'malware--' in args.id:
+            malware = get_malware_by_id(src, args.id)
+            print(str(malware))
+        elif 'attack-pattern--' in args.id:
+            behavior = get_behavior_by_id(src, args.id)
+            print(str(behavior))
+        else:
+            print('[Error] ID ' + id + ' is not valid.')
 
+    sys.exit()
 
     # malware = get_malware_by_id(src, 'malware--36e75009-8fd6-467a-aa8c-c6a4d3511dfa')
     # malwares = get_behaviors_used_by_malware(src ,malware.id)
