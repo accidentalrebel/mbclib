@@ -8,11 +8,12 @@ def get_all_objectives():
         Filter('type', '=', 'x-mitre-tactic')
     ])
 
-def get_behaviors_by_external_id(external_id):
-    return g_src.query([
+def get_behavior_by_external_id(external_id):
+    q = g_src.query([
         Filter('type', '=', 'attack-pattern'),
         Filter('external_references.external_id', '=', external_id)
     ])
+    return q[0] if len(q) > 0 else None
 
 def get_behavior_by_id(id):
     q = g_src.query([
@@ -69,17 +70,6 @@ def setup_src():
 
 if __name__ == '__main__':
     setup_src()
-    
-    # objectives = get_all_objectives()
-    # for o in objectives:
-    #     print(str(o))
-
-    # behaviors = get_behaviors_by_external_id('B0007')
-
-    behavior = get_behavior_by_id('attack-pattern--55040e64-313d-4656-8e1c-1146ff2f47d7')    
-    # related = get_behavior_relationships(behavior)
-    # for r in related:
-    #     print(str(r))
 
     malware = get_malware_by_id('malware--36e75009-8fd6-467a-aa8c-c6a4d3511dfa')
     malwares = get_behaviors_used_by_malware(malware.id)
@@ -87,11 +77,7 @@ if __name__ == '__main__':
         print(str(m))
 
     print('=======')
-    behaviors = get_malwares_using_behavior('attack-pattern--5a3611aa-4253-4302-b09e-02fe53a1af9d')
+    behavior = get_behavior_by_external_id('B0031')
+    behaviors = get_malwares_using_behavior(behavior.id)
     for b in behaviors:
         print(str(b))
-
-        
-
-    
-    
