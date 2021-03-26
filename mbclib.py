@@ -41,11 +41,15 @@ def get_relationships_by(src, id, src_type, rel_type, target_type, is_reversed=F
 
     return relationship_lists
 
-def get_behavior_relationships(src, id):
-    return get_relationships_by(src, id, 'attack-pattern', 'subtechnique-of', 'attack-pattern')
+def get_parent_behavior(src, id):
+    rels = get_relationships_by(src, id, 'attack-pattern', 'subtechnique-of', 'attack-pattern')
+    if len(rels) <= 0:
+        return None
+    
+    return get_behavior_by_id(src, rels[0].target_ref)
 
 def get_behaviors_used_by_malware(src, id):
-    rels =  get_relationships_by(src, id, 'malware', 'uses', 'attack-pattern')
+    rels = get_relationships_by(src, id, 'malware', 'uses', 'attack-pattern')
 
     l = []
     for rel in rels:
