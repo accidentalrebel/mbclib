@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 from stix2 import Filter, FileSystemSource
+import json
 
 def get_all_objectives(src):
     return src.query([
@@ -10,6 +11,14 @@ def get_behavior_by_external_id(src, external_id):
     q = src.query([
         Filter('type', '=', 'attack-pattern'),
         Filter('external_references.external_id', '=', external_id)
+    ])
+    print(str(type(q[0])))
+    return q[0] if len(q) > 0 else None
+
+def get_objective_by_shortname(src, shortname):
+    q = src.query([
+        Filter('type', '=', 'x-mitre-tactic'),
+        Filter('x_mitre_shortname', '=', shortname)
     ])
     return q[0] if len(q) > 0 else None
 
