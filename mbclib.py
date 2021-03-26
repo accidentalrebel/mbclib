@@ -1,5 +1,11 @@
 #!/usr/bin/env python3
-from stix2 import Filter, FileSystemSource
+from stix2 import Filter, FileSystemSource, properties
+from stix2.v21 import CustomObject, Bundle
+
+@CustomObject('x-mitre-tactic', [ ('x_mitre_shortname', properties.StringProperty(required=True)) ])
+class Tactic(object):
+    pass
+
 import json
 
 def get_all_objectives(src):
@@ -12,7 +18,6 @@ def get_behavior_by_external_id(src, external_id):
         Filter('type', '=', 'attack-pattern'),
         Filter('external_references.external_id', '=', external_id)
     ])
-    print(str(type(q[0])))
     return q[0] if len(q) > 0 else None
 
 def get_objective_by_shortname(src, shortname):
