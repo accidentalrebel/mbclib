@@ -13,6 +13,15 @@ def get_behavior_by_external_id(src, external_id):
     ])
     return q[0] if len(q) > 0 else None
 
+def get_mbc_external_id(behavior):
+    if behavior and behavior.external_references:
+        for ref in behavior.external_references:
+            if ref.source_name == 'mitre-mbc' \
+               and ref.external_id:
+                return ref.external_id
+
+    return None
+
 def get_behavior_by_id(src, id):
     q = src.query([
         Filter('type', '=', 'attack-pattern'),
