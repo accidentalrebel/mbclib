@@ -27,6 +27,13 @@ def get_objective_by_external_id(src, external_id):
     ])
     return q[0] if len(q) > 0 else None
 
+def get_malware_by_external_id(src, external_id):
+    q = src.query([
+        Filter('type', '=', 'malware'),
+        Filter('external_references.external_id', '=', external_id.upper())
+    ])
+    return q[0] if len(q) > 0 else None
+
 def get_objective_by_shortname(src, shortname):
     q = src.query([
         Filter('type', '=', 'x-mitre-tactic'),
@@ -34,9 +41,9 @@ def get_objective_by_shortname(src, shortname):
     ])
     return q[0] if len(q) > 0 else None
 
-def get_mbc_external_id(behavior):
-    if behavior and behavior.external_references:
-        for ref in behavior.external_references:
+def get_mbc_external_id(obj):
+    if obj and obj.external_references:
+        for ref in obj.external_references:
             if ref.source_name == 'mitre-mbc' \
                and ref.external_id:
                 return ref.external_id
