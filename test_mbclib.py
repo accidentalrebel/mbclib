@@ -31,6 +31,9 @@ def test_lib():
     o = get_objective_by_external_id(src, 'Oc0001')
     assert o.type == 'x-mitre-tactic' and o.id == 'x-mitre-tactic--0735bfd3-bffa-4476-9e3b-e33cc5c553e0'
 
+    mals = get_malwares_using_behavior(src, 'attack-pattern--7981f82d-ff58-4d38-a420-69d73a67bbc9')
+    for m in mals:
+        assert m.type == 'malware' and m.id == 'malware--36e75009-8fd6-467a-aa8c-c6a4d3511dfa'
+    
     assert get_mbc_external_id(b) == 'B0009'
     assert get_mbc_external_id(None) == None
-    

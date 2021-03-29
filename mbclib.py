@@ -88,6 +88,10 @@ def get_behaviors_used_by_malware(src, id):
     return l
 
 def get_malwares_using_behavior(src, id):
+    if not type(id) is str:
+        print('[ERROR] ID should be a string!')
+        raise SystemExit(1)
+        
     rels = get_relationships_by(src, id, 'malware', 'uses', 'attack-pattern', True)
 
     l = []
