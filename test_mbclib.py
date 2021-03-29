@@ -25,6 +25,9 @@ def test_lib():
     o = get_objective_by_shortname(src, 'anti-behavioral-analysis')
     assert o.type == 'x-mitre-tactic' and o.id == 'x-mitre-tactic--eb6166b0-f3c9-4124-aeb9-662941baa19e'
 
+    o = get_objective_by_external_id(src, 'OC0001')
+    assert o.type == 'x-mitre-tactic' and o.id == 'x-mitre-tactic--0735bfd3-bffa-4476-9e3b-e33cc5c553e0'
+
     assert get_mbc_external_id(b) == 'B0009'
     assert get_mbc_external_id(None) == None
     
