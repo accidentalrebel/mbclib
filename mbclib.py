@@ -16,14 +16,14 @@ def get_all_objectives(src):
 def get_behavior_by_external_id(src, external_id):
     q = src.query([
         Filter('type', '=', 'attack-pattern'),
-        Filter('external_references.external_id', '=', external_id)
+        Filter('external_references.external_id', '=', external_id.upper())
     ])
     return q[0] if len(q) > 0 else None
 
 def get_objective_by_external_id(src, external_id):
     q = src.query([
         Filter('type', '=', 'x-mitre-tactic'),
-        Filter('external_references.external_id', '=', external_id)
+        Filter('external_references.external_id', '=', external_id.upper())
     ])
     return q[0] if len(q) > 0 else None
 

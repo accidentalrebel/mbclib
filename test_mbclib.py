@@ -28,6 +28,9 @@ def test_lib():
     o = get_objective_by_external_id(src, 'OC0001')
     assert o.type == 'x-mitre-tactic' and o.id == 'x-mitre-tactic--0735bfd3-bffa-4476-9e3b-e33cc5c553e0'
 
+    o = get_objective_by_external_id(src, 'Oc0001')
+    assert o.type == 'x-mitre-tactic' and o.id == 'x-mitre-tactic--0735bfd3-bffa-4476-9e3b-e33cc5c553e0'
+
     assert get_mbc_external_id(b) == 'B0009'
     assert get_mbc_external_id(None) == None
     
