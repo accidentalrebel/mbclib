@@ -3,6 +3,7 @@ import pytest
 import subprocess
 import json
 
+oid = 'x-mitre-tactic--0735bfd3-bffa-4476-9e3b-e33cc5c553e0'
 bid = 'attack-pattern--295a3b88-2a7e-4bae-9c50-014fce6d5739'
 eid = 'B0009.029'
 mid = 'malware--36e75009-8fd6-467a-aa8c-c6a4d3511dfa'
@@ -10,6 +11,25 @@ mid = 'malware--36e75009-8fd6-467a-aa8c-c6a4d3511dfa'
 def test_lib():
     src = setup_src('./mbc-stix2/')
 
+    assert len(get_all_objectives(src)) > 0
+    assert len(get_all_behaviors(src)) > 0
+    assert len(get_all_malwares(src)) > 0
+
+    o = get_objective_by_id(src, oid)
+    assert o.type == 'x-mitre-tactic' and o.id == oid
+
+    o = get_objective_by_external_id(src, 'OC0001')
+    assert o.type == 'x-mitre-tactic' and o.id == 'x-mitre-tactic--0735bfd3-bffa-4476-9e3b-e33cc5c553e0'
+
+    o = get_objective_by_external_id(src, 'OC0001')
+    assert o.type == 'x-mitre-tactic' and o.id == 'x-mitre-tactic--0735bfd3-bffa-4476-9e3b-e33cc5c553e0'
+
+    o = get_objective_by_external_id(src, 'Oc0001')
+    assert o.type == 'x-mitre-tactic' and o.id == 'x-mitre-tactic--0735bfd3-bffa-4476-9e3b-e33cc5c553e0'
+
+    o = get_objective_by_shortname(src, 'anti-behavioral-analysis')
+    assert o.type == 'x-mitre-tactic' and o.id == 'x-mitre-tactic--eb6166b0-f3c9-4124-aeb9-662941baa19e'
+    
     b = get_behavior_by_id(src, bid)
     assert b.type == 'attack-pattern' and b.id == bid
 
@@ -18,18 +38,6 @@ def test_lib():
         
     b = get_parent_behavior(src, b.id)
     assert b.type == 'attack-pattern' and b.id == 'attack-pattern--61eb90ad-4b2a-4d85-b264-7f248a05507d'
-
-    o = get_objective_by_shortname(src, 'anti-behavioral-analysis')
-    assert o.type == 'x-mitre-tactic' and o.id == 'x-mitre-tactic--eb6166b0-f3c9-4124-aeb9-662941baa19e'
-
-    o = get_objective_by_external_id(src, 'OC0001')
-    assert o.type == 'x-mitre-tactic' and o.id == 'x-mitre-tactic--0735bfd3-bffa-4476-9e3b-e33cc5c553e0'
-    
-    o = get_objective_by_external_id(src, 'OC0001')
-    assert o.type == 'x-mitre-tactic' and o.id == 'x-mitre-tactic--0735bfd3-bffa-4476-9e3b-e33cc5c553e0'
-
-    o = get_objective_by_external_id(src, 'Oc0001')
-    assert o.type == 'x-mitre-tactic' and o.id == 'x-mitre-tactic--0735bfd3-bffa-4476-9e3b-e33cc5c553e0'
 
     mals = get_malwares_using_behavior(src, 'attack-pattern--7981f82d-ff58-4d38-a420-69d73a67bbc9')
     for m in mals:

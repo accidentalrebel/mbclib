@@ -13,6 +13,23 @@ def get_all_objectives(src):
         Filter('type', '=', 'x-mitre-tactic')
     ])
 
+def get_all_behaviors(src):
+    return src.query([
+        Filter('type', '=', 'attack-pattern')
+    ])
+
+def get_all_malwares(src):
+    return src.query([
+        Filter('type', '=', 'malware')
+    ])
+
+def get_objective_by_id(src, id):
+    q = src.query([
+        Filter('type', '=', 'x-mitre-tactic'),
+        Filter('id', '=', id)
+    ])
+    return q[0] if len(q) > 0 else None
+
 def get_objective_by_external_id(src, external_id):
     q = src.query([
         Filter('type', '=', 'x-mitre-tactic'),
