@@ -39,9 +39,17 @@ def test_lib():
     b = get_parent_behavior(src, b.id)
     assert b.type == 'attack-pattern' and b.id == 'attack-pattern--61eb90ad-4b2a-4d85-b264-7f248a05507d'
 
+    assert get_mbc_external_id(b) == 'B0009'
+    assert get_mbc_external_id(None) == None
+
     mals = get_malwares_using_behavior(src, 'attack-pattern--7981f82d-ff58-4d38-a420-69d73a67bbc9')
     for m in mals:
         assert m.type == 'malware' and m.id == 'malware--36e75009-8fd6-467a-aa8c-c6a4d3511dfa'
+
+    behaviors = get_behaviors_under_objective(src, 'exfiltration')
+    assert len(behaviors) > 0
+    for b in behaviors:
+        assert b.type == 'attack-pattern'
 
     m = get_malware_by_id(src, mid)
     assert m.type == 'malware' and m.id == mid
@@ -49,5 +57,5 @@ def test_lib():
     m = get_malware_by_external_id(src, 'X0014')
     assert m.type == 'malware' and m.id == 'malware--49b9796a-27fd-414e-a87d-b071aaff295b'
     
-    assert get_mbc_external_id(b) == 'B0009'
-    assert get_mbc_external_id(None) == None
+
+

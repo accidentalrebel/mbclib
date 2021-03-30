@@ -102,6 +102,12 @@ def get_parent_behavior(src, id):
     
     return get_behavior_by_id(src, rels[0].target_ref)
 
+def get_behaviors_under_objective(src, phase_name):
+    return src.query([
+        Filter('type', '=', 'attack-pattern'),
+        Filter('kill_chain_phases.phase_name', '=', phase_name)
+    ])    
+
 def get_behaviors_used_by_malware(src, id):
     rels = get_relationships_by(src, id, 'malware', 'uses', 'attack-pattern')
 
