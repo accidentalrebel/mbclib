@@ -51,11 +51,28 @@ def test_lib():
     for b in behaviors:
         assert b.type == 'attack-pattern'
 
+    hit_count = 0
+    behaviors = get_children_of_behavior(src, 'attack-pattern--5146900f-415f-4817-9153-a9a3f857b3cd')
+    assert len(behaviors) > 0
+    for b in behaviors:
+        assert b.type == 'attack-pattern'
+        if b.id == 'attack-pattern--da7d23d7-ead0-4926-a7ee-be9ea77bb2cd':
+            hit_count+=1
+    assert hit_count == 1
+
+    hit_count = 0
+    for b in behaviors:
+        assert b.type == 'attack-pattern' and b.x_mitre_is_subtechnique == True
+        if b.id == 'attack-pattern--772c8a08-0dbb-4059-8459-7ac1193840bc':
+            hit_count+=1
+    assert hit_count == 1
+
     m = get_malware_by_id(src, mid)
     assert m.type == 'malware' and m.id == mid
 
     m = get_malware_by_external_id(src, 'X0014')
     assert m.type == 'malware' and m.id == 'malware--49b9796a-27fd-414e-a87d-b071aaff295b'
+
     
 
 

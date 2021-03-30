@@ -106,7 +106,15 @@ def get_behaviors_under_objective(src, phase_name):
     return src.query([
         Filter('type', '=', 'attack-pattern'),
         Filter('kill_chain_phases.phase_name', '=', phase_name)
-    ])    
+    ])
+
+def get_children_of_behavior(src, id):
+    rels = get_relationships_by(src, id, 'attack-pattern', 'subtechnique-of', 'attack-pattern', True)
+    l = []
+    for rel in rels:
+        l.append(get_behavior_by_id(src, rel.source_ref))
+
+    return l
 
 def get_behaviors_used_by_malware(src, id):
     rels = get_relationships_by(src, id, 'malware', 'uses', 'attack-pattern')
