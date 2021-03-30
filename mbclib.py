@@ -13,23 +13,9 @@ def get_all_objectives(src):
         Filter('type', '=', 'x-mitre-tactic')
     ])
 
-def get_behavior_by_external_id(src, external_id):
-    q = src.query([
-        Filter('type', '=', 'attack-pattern'),
-        Filter('external_references.external_id', '=', external_id.upper())
-    ])
-    return q[0] if len(q) > 0 else None
-
 def get_objective_by_external_id(src, external_id):
     q = src.query([
         Filter('type', '=', 'x-mitre-tactic'),
-        Filter('external_references.external_id', '=', external_id.upper())
-    ])
-    return q[0] if len(q) > 0 else None
-
-def get_malware_by_external_id(src, external_id):
-    q = src.query([
-        Filter('type', '=', 'malware'),
         Filter('external_references.external_id', '=', external_id.upper())
     ])
     return q[0] if len(q) > 0 else None
@@ -41,19 +27,24 @@ def get_objective_by_shortname(src, shortname):
     ])
     return q[0] if len(q) > 0 else None
 
-def get_mbc_external_id(obj):
-    if obj and obj.external_references:
-        for ref in obj.external_references:
-            if ref.source_name == 'mitre-mbc' \
-               and ref.external_id:
-                return ref.external_id
-
-    return None
+def get_behavior_by_external_id(src, external_id):
+    q = src.query([
+        Filter('type', '=', 'attack-pattern'),
+        Filter('external_references.external_id', '=', external_id.upper())
+    ])
+    return q[0] if len(q) > 0 else None
 
 def get_behavior_by_id(src, id):
     q = src.query([
         Filter('type', '=', 'attack-pattern'),
         Filter('id', '=', id)
+    ])
+    return q[0] if len(q) > 0 else None
+
+def get_malware_by_external_id(src, external_id):
+    q = src.query([
+        Filter('type', '=', 'malware'),
+        Filter('external_references.external_id', '=', external_id.upper())
     ])
     return q[0] if len(q) > 0 else None
 
@@ -63,6 +54,15 @@ def get_malware_by_id(src, id):
         Filter('id', '=', id)
     ])
     return q[0] if len(q) > 0 else None
+
+def get_mbc_external_id(obj):
+    if obj and obj.external_references:
+        for ref in obj.external_references:
+            if ref.source_name == 'mitre-mbc' \
+               and ref.external_id:
+                return ref.external_id
+
+    return None
 
 def get_relationships_by(src, id, src_type, rel_type, target_type, is_reversed=False):
     relationship_lists = []
@@ -109,50 +109,3 @@ def get_malwares_using_behavior(src, id):
 
 def setup_src(path):
     return FileSystemSource(path)
-
-# if __name__ == '__main__':
-#     parser = ArgumentParser(description='MBC Tool')
-#     parser.add_argument('-i',
-#                         '--id',
-#                         help='The ID to search for.')
-#     parser.add_argument('-e',
-#                         '--externalid',
-#                         help='The external ID to search for.')
-#     parser.add_argument('-bb',
-#                         '--externalid',
-#                         help='The external ID to search for.')
-    
-#     args = parser.parse_args()
-
-#     src = setup_src()
-
-#     if args.id:
-#         if 'malware--' in args.id:
-#             malware = get_malware_by_id(src, args.id)
-#             print(str(malware))
-#         elif 'attack-pattern--' in args.id:
-#             behavior = get_behavior_by_id(src, args.id)
-#             print(str(behavior))
-#         else:
-#             print('[ERROR] ID ' + args.id + ' is not valid.')
-#             raise SystemExit(1)
-#     elif args.externalid:
-#         behavior = get_behavior_by_external_id(src, args.externalid)
-#         if behavior:
-#             print(str(behavior))
-#         else:
-#             print('[ERROR] ExternalID ' + args.externalId + ' is not valid.')
-#             raise SystemExit(1)
-
-#     sys.exit()
-
-#     # malware = get_malware_by_id(src, 'malware--36e75009-8fd6-467a-aa8c-c6a4d3511dfa')
-#     # malwares = get_behaviors_used_by_malware(src ,malware.id)
-#     # for m in malwares:
-#     #     print(str(m))
-
-#     # print('=======')
-#     # behavior = get_behavior_by_external_id(src, 'B0031')
-#     # behaviors = get_malwares_using_behavior(src, behavior.id)
-#     # for b in behaviors:
-#     #     print(str(b))
