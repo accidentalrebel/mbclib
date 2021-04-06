@@ -7,7 +7,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setup(
     name='mbclib',
-    version='0.0.1',
+    version='0.0.2',
     description='A library for querying the STIX data for the MBC (Malware Behavior Catalog).',
     long_description=long_description,
     long_description_content_type="text/markdown",
