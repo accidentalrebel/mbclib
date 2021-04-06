@@ -9,7 +9,7 @@ eid = 'B0009.029'
 mid = 'malware--36e75009-8fd6-467a-aa8c-c6a4d3511dfa'
 
 def test_lib():
-    src = setup_src('./mbc-stix2/')
+    src = setup_src('./tests/mbc-stix2/')
 
     assert len(get_all_objectives(src)) > 0
     assert len(get_all_behaviors(src)) > 0
